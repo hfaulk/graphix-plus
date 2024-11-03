@@ -6,7 +6,7 @@ def main():
 
     group_1 = graphix_plus.Group(group_id = "Group 1")
 
-    circ = Circle(Point(100,210), 50)
+    circ = Circle(Point(200,210), 50)
     graphix_plus.full_fill(circ, "green")
     circ.draw(win)
     group_1.add(circ)
