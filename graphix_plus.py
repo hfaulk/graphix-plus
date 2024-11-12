@@ -7,11 +7,11 @@ INSTALLATION:
 Add to project directory along with main graphix.py library
 """
 
-__version__ = "0.1"
+__version__ = "0.2"
 __author__ = "Harry Faulkner"
 
 #Imports
-from graphix import GraphixObject, Window, Text, Point
+from graphix import GraphixObject, Window, Text, Point, Circle, Rectangle
 
 #Classes
 class Group:
@@ -20,25 +20,25 @@ class Group:
 
     Attributes
     -----
-        group_id : str
-            Identifier for instantiated group, blank by default
+    group_id : str
+        Identifier for instantiated group, blank by default
 
     Methods
     -----
-        add(item):
-            Adds parsed item/s to group. 'item' can be either single GraphixObject, or list of GraphixObjects.
-        remove(item):
-            Removes parsed item from group. 'item' can only be a singular GraphixObject.
-        draw(window):
-            Iterates over each item in group and draws to parsed window. 'window' must be graphix Window object.
-        undraw():
-            Iterates over each item in group and undraws from screen.
-        move(dx, dy):
-            Moves all objects in group by same vector.
-        get_items():
-            Returns list of every item in group.
-        get_id():
-            Returns string of 'group_id'.
+    add(item):
+        Adds parsed item/s to group. 'item' can be either single GraphixObject, or list of GraphixObjects.
+    remove(item):
+        Removes parsed item from group. 'item' can only be a singular GraphixObject.
+    draw(window):
+        Iterates over each item in group and draws to parsed window. 'window' must be graphix Window object.
+    undraw():
+        Iterates over each item in group and undraws from screen.
+    move(dx, dy):
+        Moves all objects in group by same vector.
+    get_items():
+        Returns list of every item in group.
+    get_id():
+        Returns string of 'group_id'.
     """
     def __init__(self, *, group_id:str=""):
         self.id = group_id
@@ -195,13 +195,13 @@ class DebugOverlay:
 
     Attributes
     -----
-        window : Window
-            Window to add the overlay to.
+    window : Window
+        Window to add the overlay to.
 
     Methods
     -----
-        enable():
-            Draws overlay to window and stops functionality of window until removed.
+    enable():
+        Draws overlay to window and stops functionality of window until removed.
     """
     def __init__(self, window):
         self.window = window
@@ -237,14 +237,19 @@ class DebugOverlay:
             coord_text.text = f"({mouse_coords.x}, {mouse_coords.y})"
 
 #General Functions
-def full_fill(item: GraphixObject, colour:str) -> None:
+def full_fill(item: GraphixObject, fill_colour:str, outline_colour:str="") -> None:
     """
     Fills same colour for both inside and outline of given object.
+    Passing None will do nothing.
 
     Parameters
     -----
     item : GraphixObject
         Item to colour fill
+    fill_colour : str
+        Colour to fill inside of shape
+    outline_colour : str
+        Colour to make the outline of shape (if left blank, shape will have no outline)
 
     Returns
     -----
@@ -254,8 +259,11 @@ def full_fill(item: GraphixObject, colour:str) -> None:
     -----
     None
     """
-    item.fill_colour = colour
-    item.outline_colour = colour
+    if fill_colour is None: pass
+    else:
+        if outline_colour == "": outline_colour = fill_colour
+        item.fill_colour = fill_colour
+        item.outline_colour = outline_colour
 
 def relative_point(ref_item:GraphixObject, dx:int, dy:int) -> Point:
     """
@@ -284,3 +292,32 @@ def relative_point(ref_item:GraphixObject, dx:int, dy:int) -> Point:
     new_point = Point(new_x, new_y)
 
     return new_point
+
+def draw_rect(window:Window, top_left_point:Point, bottom_right_point:Point, fill_colour:str, *, outline_colour:str=""):
+    """
+    Draws a rectangle on a given window at the given location.
+
+    Parameters
+    -----
+    window : Window
+        Window to draw rectangle into
+    top_left_point : Point
+        Top left point of rectangle
+    bottom_right_point : Point
+        Bottom right point of rectangle
+    fill_colour : str
+        Colour to fill inside of rectanlge
+    outline_colour : str, optional
+        Colour to make the outline of rectangle (if left blank, rectangle will have no outline)
+        
+    Returns
+    -----
+    None
+    
+    See Also
+    -----
+    full_fill()
+    """
+    rect = Rectangle(top_left_point, bottom_right_point)
+    full_fill(rect, fill_colour, outline_colour)
+    rect.draw(window)

@@ -23,6 +23,8 @@ def main():
         win.get_mouse()
         group_1.move(100, 0)
 
+    graphix_plus.listen_mouse_pos(win)
+
     win.get_mouse()
     win.close()
 
