@@ -44,7 +44,7 @@ class Group:
         self.id = group_id
         self.items = []
 
-    def add(self, item:GraphixObject or list) -> None:
+    def add(self, item:GraphixObject | list) -> None:
         """
         Adds parsed item/s to group. 'item' can be either single GraphixObject, or list of GraphixObjects.
 
