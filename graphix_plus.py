@@ -7,7 +7,7 @@ INSTALLATION:
 Add to project directory along with main graphix.py library
 """
 
-__version__ = "0.2"
+__version__ = "0.3"
 __author__ = "Harry Faulkner"
 
 #Imports
@@ -321,3 +321,32 @@ def draw_rect(window:Window, top_left_point:Point, bottom_right_point:Point, fil
     rect = Rectangle(top_left_point, bottom_right_point)
     full_fill(rect, fill_colour, outline_colour)
     rect.draw(window)
+    
+def draw_circ(window:Window, center:Point, radius:int, fill_colour:str, *, outline_colour:str=""):
+    """
+    Draws circle with parsed parameters onto given window.
+    
+    Parameters
+    -----
+    window : Window
+        Window to draw rectangle into
+    center : Point
+        Point of center of circle
+    radius : Point
+        Radius of circle to draw
+    fill_colour : str
+        Colour to fill inside of rectanlge
+    outline_colour : str, optional
+        Colour to make the outline of rectangle (if left blank, rectangle will have no outline)
+    
+    Returns
+    -----
+    None
+    
+    See Also
+    -----
+    full_fill()
+    """
+    circ = Circle(center, radius)
+    full_fill(circ, fill_colour, outline_colour)
+    circ.draw(window)
