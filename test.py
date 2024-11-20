@@ -23,7 +23,7 @@ def main():
         win.get_mouse()
         group_1.move(100, 0)
 
-    graphix_plus.listen_mouse_pos(win)
+    graphix_plus.draw_rect(win, Point(100, 100), Point(200, 200), "red", "black", outline_width=10)
 
     win.get_mouse()
     win.close()

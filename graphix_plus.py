@@ -7,7 +7,7 @@ INSTALLATION:
 Add to project directory along with main graphix.py library
 """
 
-__version__ = "0.3"
+__version__ = "0.4"
 __author__ = "Harry Faulkner"
 
 #Imports
@@ -188,54 +188,6 @@ class Group:
         """
         return self.id
 
-class DebugOverlay:
-    """
-    A class that freezes functionality of window and adds ability to click anywhere on screen
-    and be shown the coordinates for that specific point.
-
-    Attributes
-    -----
-    window : Window
-        Window to add the overlay to.
-
-    Methods
-    -----
-    enable():
-        Draws overlay to window and stops functionality of window until removed.
-    """
-    def __init__(self, window):
-        self.window = window
-        self.win_height = self.window.height
-        self.win_width = self.window.width
-
-    def enable(self) -> None:
-        """
-        Draws overlay to window and stops functionality of window until removed.
-        Can only be removed by removing in code.
-
-        Parameters
-        -----
-        None
-
-        Returns
-        -----
-        None
-
-        See Also
-        -----
-        None
-        """
-        overlay_items = Group()
-        debug_text = Text(Point(75, 20), "DEBUG ENABLED")
-        coord_text = Text(Point(self.win_width - 45, 20), "()")
-
-        overlay_items.add([debug_text, coord_text])
-        overlay_items.draw(self.window)
-
-        while True:
-            mouse_coords = self.window.get_mouse()
-            coord_text.text = f"({mouse_coords.x}, {mouse_coords.y})"
-
 #General Functions
 def full_fill(item: GraphixObject, fill_colour:str, outline_colour:str="") -> None:
     """
@@ -293,7 +245,13 @@ def relative_point(ref_item:GraphixObject, dx:int, dy:int) -> Point:
 
     return new_point
 
-def draw_rect(window:Window, top_left_point:Point, bottom_right_point:Point, fill_colour:str, *, outline_colour:str=""):
+def draw_rect(window:Window,
+              top_left_point:Point,
+              bottom_right_point:Point,
+              fill_colour:str,
+              outline_colour:str="",
+              *,
+              outline_width:int=1):
     """
     Draws a rectangle on a given window at the given location.
 
@@ -306,9 +264,11 @@ def draw_rect(window:Window, top_left_point:Point, bottom_right_point:Point, fil
     bottom_right_point : Point
         Bottom right point of rectangle
     fill_colour : str
-        Colour to fill inside of rectanlge
+        Colour to fill inside rectangle
     outline_colour : str, optional
         Colour to make the outline of rectangle (if left blank, rectangle will have no outline)
+    outline_width : int, optional
+        Determines width of shape's outline (default value of 0.5)
         
     Returns
     -----
@@ -319,10 +279,17 @@ def draw_rect(window:Window, top_left_point:Point, bottom_right_point:Point, fil
     full_fill()
     """
     rect = Rectangle(top_left_point, bottom_right_point)
+    rect.outline_width = outline_width
     full_fill(rect, fill_colour, outline_colour)
     rect.draw(window)
     
-def draw_circ(window:Window, center:Point, radius:int, fill_colour:str, *, outline_colour:str=""):
+def draw_circ(window:Window,
+              center:Point,
+              radius:int,
+              fill_colour:str,
+              outline_colour:str="",
+              *,
+              outline_width:int=1):
     """
     Draws circle with parsed parameters onto given window.
     
@@ -335,10 +302,12 @@ def draw_circ(window:Window, center:Point, radius:int, fill_colour:str, *, outli
     radius : Point
         Radius of circle to draw
     fill_colour : str
-        Colour to fill inside of rectanlge
+        Colour to fill inside rectangle
     outline_colour : str, optional
         Colour to make the outline of rectangle (if left blank, rectangle will have no outline)
-    
+    outline_width : int, optional
+        Determines width of shape's outline (default value of 0.5)
+
     Returns
     -----
     None
@@ -348,5 +317,6 @@ def draw_circ(window:Window, center:Point, radius:int, fill_colour:str, *, outli
     full_fill()
     """
     circ = Circle(center, radius)
+    circ.outline_width = outline_width
     full_fill(circ, fill_colour, outline_colour)
     circ.draw(window)
