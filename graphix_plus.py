@@ -7,7 +7,7 @@ INSTALLATION:
 Add to project directory along with main graphix.py library
 """
 
-__version__ = "0.4"
+__version__ = "0.5"
 __author__ = "Harry Faulkner"
 
 #Imports
@@ -320,3 +320,25 @@ def draw_circ(window:Window,
     circ.outline_width = outline_width
     full_fill(circ, fill_colour, outline_colour)
     circ.draw(window)
+
+from ctypes import windll, Structure, c_long, byref
+
+class POINT(Structure):
+    _fields_ = [("x", c_long), ("y", c_long)]
+
+def queryMousePosition(win):
+    pt = POINT()
+    windll.user32.GetCursorPos(byref(pt))
+
+    geom = win.master.winfo_geometry().split("+")
+
+    top_left_x = geom[-2]
+    top_left_y = geom[-1]
+
+    mouse_x = pt.x - int(top_left_x)
+    mouse_y = pt.y - int(top_left_y)
+
+    print(top_left_x, top_left_y, mouse_x, mouse_y)
+
+    return { "x": mouse_x, "y": mouse_y}
+

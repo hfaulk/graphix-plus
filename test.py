@@ -16,14 +16,16 @@ def main():
     circ2.draw(win)
     group_1.add(circ2)
 
-    debugger = graphix_plus.DebugOverlay(win)
-    #debugger.enable()
-
     for i in range(2):
         win.get_mouse()
         group_1.move(100, 0)
 
     graphix_plus.draw_rect(win, Point(100, 100), Point(200, 200), "red", "black", outline_width=10)
+
+    win.get_mouse()
+    mouse_coords = graphix_plus.queryMousePosition(win)
+    print(mouse_coords, win.get_mouse())
+    graphix_plus.draw_circ(win, Point(mouse_coords["x"], mouse_coords["y"]), 50, "blue", "black")
 
     win.get_mouse()
     win.close()
