@@ -11,7 +11,7 @@ __version__ = "0.5"
 __author__ = "Harry Faulkner"
 
 #Imports
-from graphix import GraphixObject, Window, Text, Point, Circle, Rectangle
+from graphix import GraphixObject, Window, Point, Circle, Rectangle, Line
 
 #Classes
 class Group:
@@ -251,7 +251,7 @@ def draw_rect(window:Window,
               fill_colour:str,
               outline_colour:str="",
               *,
-              outline_width:int=1):
+              outline_width:int=1) -> list:
     """
     Draws a rectangle on a given window at the given location.
 
@@ -272,7 +272,7 @@ def draw_rect(window:Window,
         
     Returns
     -----
-    None
+    List
     
     See Also
     -----
@@ -282,6 +282,7 @@ def draw_rect(window:Window,
     rect.outline_width = outline_width
     full_fill(rect, fill_colour, outline_colour)
     rect.draw(window)
+    return rect
     
 def draw_circ(window:Window,
               center:Point,
@@ -289,7 +290,7 @@ def draw_circ(window:Window,
               fill_colour:str,
               outline_colour:str="",
               *,
-              outline_width:int=1):
+              outline_width:int=1) -> list:
     """
     Draws circle with parsed parameters onto given window.
     
@@ -310,7 +311,7 @@ def draw_circ(window:Window,
 
     Returns
     -----
-    None
+    List
     
     See Also
     -----
@@ -320,25 +321,34 @@ def draw_circ(window:Window,
     circ.outline_width = outline_width
     full_fill(circ, fill_colour, outline_colour)
     circ.draw(window)
+    
+def draw_line(window:Window, point_1:Point, point_2:Point, colour:str, *, outline_width:int=1) -> list:
+    """
+    Draws line with parsed parameters onto given window.
+    
+    Parameters
+    -----
+    window : Window
+        Window to draw rectangle into
+    point_1 : Point
+        Start point of line
+    point_2 : Point
+        End point of line
+    colour : str
+        Colour to make line
+    outline_width : int, optional
+        Determines thickness of line (default value of 1)
 
-from ctypes import windll, Structure, c_long, byref
-
-class POINT(Structure):
-    _fields_ = [("x", c_long), ("y", c_long)]
-
-def queryMousePosition(win):
-    pt = POINT()
-    windll.user32.GetCursorPos(byref(pt))
-
-    geom = win.master.winfo_geometry().split("+")
-
-    top_left_x = geom[-2]
-    top_left_y = geom[-1]
-
-    mouse_x = pt.x - int(top_left_x)
-    mouse_y = pt.y - int(top_left_y)
-
-    print(top_left_x, top_left_y, mouse_x, mouse_y)
-
-    return { "x": mouse_x, "y": mouse_y}
-
+    Returns
+    -----
+    List
+    
+    See Also
+    -----
+    None
+    """
+    line = Line(point_1, point_2)
+    line.fill_colour = colour
+    line.outline_width = outline_width
+    line.draw(window)
+    return line
